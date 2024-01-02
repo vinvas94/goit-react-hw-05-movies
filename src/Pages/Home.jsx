@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getMoveTrending } from '../Api/Api';
 import { useLocation } from 'react-router-dom';
-import { FilmList, FilmItem, FilmLink, Img, Name } from '../styled/styled';
-import DefaultImg from '../img/imageNotFound.jpg';
+import MoviesList from '../components/MovieList/MovieList';
 
 const Home = () => {
   const [trending, setTrending] = useState([]);
@@ -12,8 +11,8 @@ const Home = () => {
     const trendingMoves = async () => {
       try {
         const data = await getMoveTrending();
-        const newMovis = data.data.results;
-        setTrending(newMovis);
+        const newMovil = data.data.results;
+        setTrending(newMovil);
       } catch (error) {
         console.error('error');
       }
@@ -22,26 +21,9 @@ const Home = () => {
   }, []);
 
   return (
-    <FilmList>
-      {trending &&
-        trending.map(({ id, title, poster_path }) => (
-          <FilmItem key={id}>
-            <FilmLink key={id} to={`/movies/${id}`} state={{ from: location }}>
-              <Img
-                src={
-                  poster_path
-                    ? `https://image.tmdb.org/t/p/w500/${poster_path}`
-                    : DefaultImg
-                }
-                alt={title}
-                width="200"
-                height="auto"
-              />
-              <Name>{title}</Name>
-            </FilmLink>
-          </FilmItem>
-        ))}
-    </FilmList>
+    <div>
+      <MoviesList movies={trending} location={location} />
+    </div>
   );
 };
 

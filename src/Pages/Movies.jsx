@@ -1,18 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useLocation } from 'react-router-dom';
 import { getMoveName } from '../Api/Api';
-import DefaultImg from '../img/imageNotFound.jpg';
-import {
-  Title,
-  Form,
-  Input,
-  Btn,
-  FilmList,
-  FilmItem,
-  FilmLink,
-  Img,
-  Name,
-} from '../styled/styled';
+import { Title, Form, Input, Btn } from '../styled/styled';
+import MoviesList from '../components/MovieList/MovieList';
 
 const Movies = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -59,28 +49,7 @@ const Movies = () => {
         <Btn type="submit">Search</Btn>
       </Form>
 
-      <FilmList>
-        {searchMove &&
-          searchMove.map(({ id, title, poster_path }) => (
-            <FilmItem key={id}>
-              <FilmLink
-                key={id}
-                to={`/movies/${id}`}
-                state={{ from: location }}
-              >
-                <Img
-                  src={
-                    poster_path
-                      ? `https://image.tmdb.org/t/p/w500/${poster_path}`
-                      : DefaultImg
-                  }
-                  alt={title}
-                />
-                <Name>{title}</Name>
-              </FilmLink>
-            </FilmItem>
-          ))}
-      </FilmList>
+      <MoviesList movies={searchMove} location={location} />
     </>
   );
 };
